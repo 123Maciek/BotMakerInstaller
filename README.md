@@ -16,8 +16,11 @@ Open the .exe file that it downloaded and install it with deafult options
 Open cmd (win + r and type cmd and click enter) and type:
  * py --version (Correct output: Python 3.x.x) (Incorrect output: )
  * git --version (Correct output: git version 2.x.x.windows.1)
-3. Open installer.bat
+4. Download my package
+On the page https://www.github.com/123Maciek/BotMakerInstaller click on green button "Code" and at the bottom click download zip folder
+then upack it.
+5. Open installer.bat
 This program will install all required python libraries and start install.py prorgam.
-install.py program will clone github repository (https://github.com/123Maciek/BotProgrammer)
+install.py program will clone github repository (https://github.com/123Maciek/BotMaker)
 to your folder in C:\ProgramFiles\BotMaker and in this folder will edit start.bat to be compatible with its current localization
 and will create a shortcut of window.vbs on your desktop with icon called icon.ico

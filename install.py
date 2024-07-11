@@ -4,20 +4,27 @@ import os
 import sys
 import shutil
 import winshell
+from pathlib import Path
 from win32com.client import Dispatch
 
 def download_newest_files(path):
-    repo_url = "https://github.com/123Maciek/BotProgrammer"
+    if os.path.isdir():
+        shutil.rmtree(path)
+    os.makedirs(path)
+    repo_url = "https://github.com/123Maciek/BotMaker"
     try:
         git.Repo.clone_from(repo_url, path)
     except Exception as e:
         pass
 
-download_newest_files("C:\\Program Files\\BotMaker")
-with open("C:\\Program Files\\BotMaker\\start.bat", 'w') as file:
+documents_path = Path(os.getenv('USERPROFILE')) / 'Documents'
+folder_path = documents_path + "\\BotMakerFiles\\"
+
+download_newest_files(folder_path)
+with open(f"{folder_path}start.bat", 'w') as file:
     file.write("@echo off\n")
-    file.write('cd "C:\\Program Files\\BotMaker"\n')
-    file.write('py "C:\\Program Files\\BotMaker\\main.py"')
+    file.write(f'cd "{folder_path}"\n')
+    file.write(f'py "{folder_path}main.py"')
 
 def create_shortcut(target_file, shortcut_name, icon_path=None):
     desktop = winshell.desktop()
@@ -30,4 +37,4 @@ def create_shortcut(target_file, shortcut_name, icon_path=None):
         shortcut.IconLocation = icon_path
     shortcut.save()
 
-create_shortcut("C:\\Program Files\\BotMaker\\window.vbs", "BotMaker", icon_path="C:\\Program Files\\BotMaker\\icon.ico")
+create_shortcut(f"{folder_path}window.vbs", "BotMaker", icon_path=f"{folder_path}icon.ico")

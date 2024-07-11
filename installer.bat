@@ -2,7 +2,7 @@
 
 pip install winshell
 pip install pywin32
-pip install tkinter
+pip install pathlib
 pip install requests
 pip install gitpython
 pip install pyautogui
@@ -13,3 +13,5 @@ pip install pyperclip
 pip install pygithub
 
 py install.py
+
+pause
