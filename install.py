@@ -8,7 +8,7 @@ from pathlib import Path
 from win32com.client import Dispatch
 
 def download_newest_files(path):
-    if os.path.isdir():
+    if os.path.isdir(path):
         shutil.rmtree(path)
     os.makedirs(path)
     repo_url = "https://github.com/123Maciek/BotMaker"
@@ -18,7 +18,7 @@ def download_newest_files(path):
         pass
 
 documents_path = Path(os.getenv('USERPROFILE')) / 'Documents'
-folder_path = documents_path + "\\BotMakerFiles\\"
+folder_path = str(documents_path) + "\\BotMakerFiles\\"
 
 download_newest_files(folder_path)
 with open(f"{folder_path}start.bat", 'w') as file:
