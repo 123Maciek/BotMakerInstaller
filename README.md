@@ -12,6 +12,10 @@ go to https://git-scm.com/download/win and download one of this:
  * 32-bit Git for Windows Setup
  * 64-bit Git for Windows Setup (Recommended)
 Open the .exe file that it downloaded and install it with deafult options
+3. Check your installations
+Open cmd (win + r and type cmd and click enter) and type:
+ * py --version (Correct output: Python 3.x.x) (Incorrect output: )
+ * git --version (Correct output: git version 2.x.x.windows.1)
 3. Open installer.bat
 This program will install all required python libraries and start install.py prorgam.
 install.py program will clone github repository (https://github.com/123Maciek/BotProgrammer)
