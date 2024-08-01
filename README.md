@@ -20,7 +20,7 @@ Open cmd (win + r and type cmd and click enter) and type:
 On the page https://www.github.com/123Maciek/BotMakerInstaller click on green button "Code" and at the bottom click download zip folder
 then upack it.
 5. Open installer.bat
-This program will install all required python libraries and start install.py prorgam.
-install.py program will clone github repository (https://github.com/123Maciek/BotMaker)
-to your folder in C:\ProgramFiles\BotMaker and in this folder will edit start.bat to be compatible with its current localization
+This program will run install.py program.
+install.py program install all required python libraries and will clone github repository (https://github.com/123Maciek/BotMaker)
+to your folder in Documents called BotMakerFiles and in this folder will edit start.bat to be compatible with its current localization
 and will create a shortcut of window.vbs on your desktop with icon called icon.ico
