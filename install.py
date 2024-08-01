@@ -11,6 +11,9 @@ import stat
 
 requirements = ["winshell", "pywin32", "pathlib", "requests", "gitpython", "pyautogui", "Pillow", "pynput", "keyboard", "pyperclip", "pygithub"]
 
+print("BOTMAKER INSTALLER")
+print()
+
 def downloading_pip_libs(libs):
     for lib in libs:
         print(f"Downloading {lib} library . . .")
