@@ -14,6 +14,7 @@ fresh, verified copy is confirmed good.
 """
 import os
 import shutil
+import stat
 import subprocess
 import sys
 from pathlib import Path
@@ -24,6 +25,20 @@ INSTALLER_REQUIREMENTS = Path(__file__).with_name("requirements-installer.txt")
 
 class InstallError(Exception):
     pass
+
+
+def _force_remove_readonly(func, path, exc_info):
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
+
+
+def _remove_tree(path: Path):
+    """rmtree that clears read-only attributes instead of silently giving up
+    on them like ignore_errors=True does — git marks packed object files
+    read-only on Windows, so a plain ignore_errors rmtree of a partial clone
+    can leave it behind, breaking the next clone into the same path."""
+    if path.exists():
+        shutil.rmtree(path, onerror=_force_remove_readonly)
 
 
 def pip_install(requirements_path):
@@ -66,14 +81,18 @@ def install_or_update(target_dir: Path):
 
     print(f"Existing install found at {target_dir} — staging an update ...")
     staging = target_dir.with_name(target_dir.name + ".staging")
-    if staging.exists():
-        shutil.rmtree(staging, ignore_errors=True)
+    try:
+        _remove_tree(staging)
+    except OSError as e:
+        raise InstallError(f"Could not clear the previous download folder ({staging}): {e}") from e
     clone_botmaker(staging)
     verify_botmaker(staging)
 
     old = target_dir.with_name(target_dir.name + ".old")
-    if old.exists():
-        shutil.rmtree(old, ignore_errors=True)
+    try:
+        _remove_tree(old)
+    except OSError as e:
+        raise InstallError(f"Could not clear a leftover backup folder ({old}): {e}") from e
     try:
         os.rename(target_dir, old)
     except OSError as e:
@@ -85,7 +104,10 @@ def install_or_update(target_dir: Path):
         os.rename(old, target_dir)  # roll back
         raise InstallError(f"Could not move the update into place: {e}. "
                             "Rolled back — your existing installation is unchanged.") from e
-    shutil.rmtree(old, ignore_errors=True)
+    try:
+        _remove_tree(old)
+    except OSError:
+        pass  # harmless leftover backup — the update itself already succeeded
 
 
 def write_start_script(target_dir: Path):
