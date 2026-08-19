@@ -121,16 +121,6 @@ def install_or_update(target_dir: Path):
         pass  # harmless leftover backup — the update itself already succeeded
 
 
-def write_start_script(target_dir: Path):
-    start_bat = target_dir / "start.bat"
-    start_bat.write_text(
-        "@echo off\n"
-        f'cd /d "{target_dir}"\n'
-        f'"{sys.executable}" "{target_dir / "main.py"}"\n',
-        encoding="utf-8",
-    )
-
-
 def create_desktop_shortcut(target_dir: Path):
     try:
         import winshell
@@ -170,7 +160,8 @@ def main():
         print("Installing BotMaker's own dependencies ...")
         pip_install(target_dir / "requirements.txt")
 
-        write_start_script(target_dir)
+        # start.bat comes from the clone itself now (portable, %~dp0-relative) —
+        # no install-time templating needed.
         create_desktop_shortcut(target_dir)
     except InstallError as e:
         print(f"\nInstallation failed: {e}")
