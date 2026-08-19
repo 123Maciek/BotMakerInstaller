@@ -55,9 +55,20 @@ def pip_install(requirements_path):
 def clone_botmaker(destination):
     import git
     try:
-        git.Repo.clone_from(BOTMAKER_REPO_URL, str(destination))
+        repo = git.Repo.clone_from(BOTMAKER_REPO_URL, str(destination))
+        repo.close()
     except Exception as e:
         raise InstallError(f"Failed to download BotMaker: {e}") from e
+
+    # Don't leave .git behind in the live install — BotMaker's own self-update
+    # clones fresh into its own staging folder later, so this copy never needs
+    # one, and a leftover .git full of freshly-written pack files is exactly
+    # what antivirus/the indexer scan right after install, which can
+    # transiently block Windows from renaming that directory on the next update.
+    try:
+        _remove_tree(Path(destination) / ".git")
+    except OSError as e:
+        raise InstallError(f"Downloaded BotMaker but could not clean up its .git folder: {e}") from e
 
 
 def verify_botmaker(folder):
